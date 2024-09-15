@@ -1,5 +1,5 @@
-#include "stl_alloc.h"
-#include "stl_construct.h"
+#include "my_stl_alloc.h"
+#include "my_stl_construct.h"
 
 namespace MY_STL {
 
@@ -32,8 +32,8 @@ class vector {
 
  public:
   iterator begin() { return start; }
-  iterator end() { return end; }
-  size_type size() { return size_type(end) - begin(); }
+  iterator end() { return finish; }
+  size_type size() { return size_type(end() - begin()); }
   size_type capacity() const { return size_type(end_of_storage) - begin(); }
   bool empty() const { return begin() == end(); }
   reference operator[](size_type n) { return *(begin() + n); }
@@ -53,10 +53,10 @@ class vector {
   reference back() { return *(end() - 1); }
   void push_back(const T& value) {
     if (finish != end_of_storage) {
-      construct(finish, value);
+      MY_STL::construct(finish, value);
       ++finish;
     } else {
-      insert_aux(end(), value);
+      // insert_aux(end(), value); //! 后续实现
     }
   }
 

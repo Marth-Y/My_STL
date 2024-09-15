@@ -1,20 +1,20 @@
 #ifndef MY_STL_CONSTRUCT_H
 #define MY_STL_CONSTRUCT_H
 
-#include <new.h>
+#include <new>
 
-#include "type_traits.h"
+#include "my_type_traits.h"
 
 namespace MY_STL {
 
 //*******************construct*****************//
 template <class T1>
-inline void constuct(T1* p) {
+inline void construct(T1* p) {
   new (p) T1();
 }
 
 template <class T1, class T2>
-inline void constuct(T1* p, const T2& value) {
+inline void construct(T1* p, const T2& value) {
   new (p) T1(value);  // 调用定位new，就是在p指向的地址，调用T1构造函数
 }
 
