@@ -16,7 +16,7 @@ namespace MY_STL {
 template <class InputIterator, class ForWardIterator>
 ForWardIterator uninitialized_copy(InputIterator first, InputIterator last,
                                    ForWardIterator result) {
-  return __uninitialized_copy(first, last,result, velue_type(result));
+  return __uninitialized_copy(first, last, result, velue_type(result));
 }
 
 template <class ForWardIterator, class T>
