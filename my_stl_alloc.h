@@ -5,12 +5,13 @@
 #define MY_STL_ALLOC_H
 
 #include <stdlib.h>
+#include <stdio.h>
 
 namespace MY_STL {
 
 #define __THROW_BAD_ALLOC            \
   do {                               \
-    cerr << "out of memory" << endl; \
+    printf("out of memory\n"); \
     exit(1);                         \
   } while (0)
 
@@ -165,9 +166,9 @@ template <int inst>
 size_t __default_alloc_template<inst>::_heap_size = 0;
 
 template <int inst>
-__default_alloc_template<inst>::obj* volatile __default_alloc_template<
-    inst>::_free_list[__NFREELISTS] = {0, 0, 0, 0, 0, 0, 0, 0,
-                                       0, 0, 0, 0, 0, 0, 0, 0};
+typename __default_alloc_template<inst>::obj* 
+  volatile __default_alloc_template<inst>::_free_list[__NFREELISTS] = 
+  {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
 
 // refill实现
 // refill接受的参数 n ，已经上调至8的倍数

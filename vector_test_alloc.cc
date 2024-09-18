@@ -1,12 +1,12 @@
 #include <iostream>
-#include <vector>
+#include "my_stl_vector.h"
 
-#include "stl_alloc.h"
+#include "my_stl_alloc.h"
 
 using namespace std;
 
 int main() {
-  vector<int, MY_STL::__default_alloc_template<0>> vec;
+  MY_STL::vector<int, MY_STL::simple_alloc<int, MY_STL::alloc>> vec;
   for (int i = 0; i < 10; i++) {
     vec.push_back(i);
   }
