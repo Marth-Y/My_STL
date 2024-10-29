@@ -62,23 +62,23 @@ inline typename iterator_traits<Iterator>::iterator_category iterator_category(
 
 // 这个函数可以方便的决定某个迭代器的diffrence_type
 template <class Iterator>
-inline typename iterator_traits<Iterator>::diffrence_type* iterator_category(
+inline typename iterator_traits<Iterator>::diffrence_type* distance_type(
     const Iterator&) {
-  return static_cast<iterator_traits<Iterator>::diffrence_type*>(0);
+  return static_cast<typename iterator_traits<Iterator>::diffrence_type*>(0);
 }
 
 // 这个函数可以方便的决定某个迭代器的value type
 template <class Iterator>
-inline typename iterator_traits<Iterator>::value_type* iterator_category(
+inline typename iterator_traits<Iterator>::value_type* velue_type(
     const Iterator&) {
-  return static_assert<iterator_traits<Iterator>::value_type*>(0);
+  return static_cast<typename iterator_traits<Iterator>::value_type*>(0);
 }
 
 // distance函数实现
 template <class InputIterator>
-inline iterator_traits<InputIterator>::difference_type __distance(
+inline typename iterator_traits<InputIterator>::difference_type __distance(
     InputIterator first, InputIterator last, input_iterator_tag) {
-  iterator_traits<InputIterator>::difference_type n = 0;
+  typename iterator_traits<InputIterator>::difference_type n = 0;
   while (first != last) {
     ++first;
     ++n;
@@ -87,15 +87,15 @@ inline iterator_traits<InputIterator>::difference_type __distance(
 }
 
 template <class RandomAccessIterator>
-inline iterator_traits<RandomAccessIterator>::difference_type __distance(
+inline typename iterator_traits<RandomAccessIterator>::difference_type __distance(
     RandomAccessIterator first, RandomAccessIterator last,
     random_access_iterator_tag) {
-  iterator_traits<RandomAccessIterator>::difference_type n = 0;
+  typename iterator_traits<RandomAccessIterator>::difference_type n = 0;
   return last - first;
 }
 
 template <class InputIterator>
-inline iterator_traits<InputIterator>::difference_type distance(
+inline typename iterator_traits<InputIterator>::difference_type distance(
     InputIterator first, InputIterator last) {
   typedef typename iterator_traits<InputIterator>::iterator_category category;
   return __distance(first, last, category());

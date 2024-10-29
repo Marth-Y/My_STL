@@ -1,5 +1,6 @@
 #include "my_stl_alloc.h"
 #include "my_stl_construct.h"
+#include "my_stl_uninitialized.h"
 
 namespace MY_STL {
 
@@ -18,7 +19,7 @@ class vector {
   iterator start;
   iterator finish;
   iterator end_of_storage;
-  void insert_aux(iterator position, const T& x);  //! 后续需要实现
+  void insert_aux(iterator position, const T& x);
   void deallocate() {
     if (start) {
       data_alloctor::deallocate(start, end_of_storage - start);
@@ -57,7 +58,7 @@ class vector {
       MY_STL::construct(finish, value);
       ++finish;
     } else {
-      // insert_aux(end(), value); //! 后续实现
+      insert_aux(end(), value);
     }
   }
 
@@ -100,7 +101,7 @@ void vector<T, Alloc>::insert_aux(iterator position, const T& x) {
     construct(finish, *(finish - 1));
     ++finish;
     T x_copy = x;
-    copy_backward(position, finish - 2, finish - 1);  //! 尚未实现
+    // copy_backward(position, finish - 2, finish - 1);  //! 尚未实现
     *position = x_copy;
   } else {
     const size_type old_size = size();
@@ -111,7 +112,7 @@ void vector<T, Alloc>::insert_aux(iterator position, const T& x) {
       // 分两段拷贝构建过来。
       // 1. 将插入位置position前的元素拷贝过来
       new_finish =
-          uninitialized_copy(start, position, new_start);  //! 尚未完全实现
+          uninitialized_copy(start, position, new_start);
       // 2. 在插入的位置构建x
       construct(new_finish, x);
       ++new_finish;
@@ -150,18 +151,42 @@ void vector<T, Alloc>::insert(iterator position, size_type n, const T& x) {
         finish += n;
         // 2. 拷贝最后position到old_finish - n的元素到old_finish
         // 即：将position~finish的元素分成了两段：1. finish - n ~ finish   2. position ~ finish - n
-        copy_backward(position, old_finish - n, old_finish);  //! 尚未实现
+        // copy_backward(position, old_finish - n, old_finish);  //! 尚未实现
         // 3. 填充position ~ position + n的元素
-        fill(position, position + n, x_copy);                 //! 尚未实现
+        // fill(position, position + n, x_copy);                 //! 尚未实现
       } else {
         // 插入点之后的现有元素小于等于新增元素个数
         uninitialized_fill_n(finish, n - elems_after, x_copy);
         finish += n - elems_after;
         uninitialized_copy(position, old_finish, finish);
         finish += elems_after;
-        fill(position, old_finish, x_copy); //! 尚未实现
+        // fill(position, old_finish, x_copy); //! 尚未实现
       }
     } else {
+      const size_type old_size = size();
+      const size_type len = old_size + std::max(old_size, n);
+      iterator new_start = data_alloctor::allocate(len);
+      iterator new_finish = new_start;
+      try
+      {
+        new_finish = uninitialized_copy(start, position, new_start);
+        new_finish = uninitialized_fill_n(new_finish, n, x);
+        new_finish = uninitialized_copy(position, end, new_finish);
+      }
+      catch(...)
+      {
+        // commit or rollback
+        destroy(new_start, new_finish);
+        data_alloctor::deallocate(new_start, new_finish);
+        throw;
+      }
+      // 释放旧的空间
+      destroy(start, finish);
+      deallocate();
+      // 调整新的指针
+      start = new_start;
+      finish = new_finish;
+      end_of_storage = new_start + len;
     }
   }
 }

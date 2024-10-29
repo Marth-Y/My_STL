@@ -97,13 +97,13 @@ class __default_alloc_template {
     union obj* _free_list_link;  // 指向下一个节点
     char _client_data[1];        // 指向实际区块，客端可见
   };
-  enum { __ALIGN = 8 };                           // 小型区块上调边界
-  enum { __MAX_BYTES = 128 };                     // 小型区块最大大小
+  enum { __ALIGN = 16 };                           // 小型区块上调边界
+  enum { __MAX_BYTES = 256 };                     // 小型区块最大大小
   enum { __NFREELISTS = __MAX_BYTES / __ALIGN };  // 链表个数
 
  private:
   static size_t ROUND_UP(size_t bytes) {
-    return (((bytes) + __ALIGN - 1) & -(__ALIGN - 1));
+    return (((bytes) + __ALIGN - 1) & ~(__ALIGN - 1));
   }
 
  private:
@@ -218,6 +218,7 @@ char* __default_alloc_template<inst>::chunk_alloc(size_t size, int& nobjs) {
     _start_free += total_bytes;
     return result;
   } else if (bytes_left >= size) {
+    result = _start_free;
     nobjs = bytes_left / size;
     total_bytes = size * nobjs;
     _start_free += total_bytes;
