@@ -12,4 +12,5 @@ int main() {
     ve.insert(ve.end() - 1, 2, 5);
     std::ostream_iterator<int> oo(cout, " ");
     std::copy(ve.begin(), ve.end(), oo);
+    ve.erase(ve.begin(), ve.end());
 }
