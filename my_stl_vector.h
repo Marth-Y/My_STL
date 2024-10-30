@@ -2,6 +2,8 @@
 #include "my_stl_construct.h"
 #include "my_stl_uninitialized.h"
 
+#include <iostream>
+
 namespace MY_STL {
 
 template <class T, class Alloc = alloc>
@@ -92,7 +94,18 @@ class vector {
     uninitialized_fill_n(result, n, x);
     return result;
   }
+ private:
+  void Print(iterator first, iterator last);
 };
+
+template <class T, class Alloc>
+void vector<T, Alloc>::Print(iterator first, iterator last) {
+  std::cout << "------------------------------------ \n";
+  for (;first != last; ++ first) {
+    std::cout << "------ " << *first << std::endl;
+  }
+  std::cout << "------------------------------------ \n";
+}
 
 template <class T, class Alloc>
 void vector<T, Alloc>::insert_aux(iterator position, const T& x) {

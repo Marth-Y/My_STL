@@ -18,8 +18,9 @@ inline ForWardIterator __uninitialized_copy_aux(InputIterator first, InputIterat
   ForWardIterator cur = result;
   for (; first != last; ++first, ++cur) {
     *cur = *first;
-    std::cout << "value = " << *cur << std::endl;
+    // std::cout << "value = " << *cur << std::endl;
   }
+  return cur;
 }
 
 // 是POD类型，则需要调用construct函数先构造对象，然后cp

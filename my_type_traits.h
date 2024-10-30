@@ -33,6 +33,24 @@ struct __type_traits {
   typedef __false_type is_POD_type;
 };
 
+template <>
+struct __type_traits<int> {
+  typedef __true_type has_trivial_default_constructor;
+  typedef __true_type has_trivial_copy_constructor;
+  typedef __true_type has_trivial_assignment_operator;
+  typedef __true_type has_trivial_destructor;
+  typedef __true_type is_POD_type;
+};
+
+template <>
+struct __type_traits<double> {
+  typedef __true_type has_trivial_default_constructor;
+  typedef __true_type has_trivial_copy_constructor;
+  typedef __true_type has_trivial_assignment_operator;
+  typedef __true_type has_trivial_destructor;
+  typedef __true_type is_POD_type;
+};
+
 // 对该类进行偏特化，就可以区分出traits类
 };  // namespace MY_STL
 
