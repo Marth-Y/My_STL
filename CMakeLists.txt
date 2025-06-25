@@ -12,7 +12,7 @@ else()
 endif()
 
 include_directories(/home/luyimin/My_STL/include/stl)
-include_directories(/home/luyimin/My_STL/include/googletest)
+include_directories(/home/luyimin/My_STL/thirdparty/include/)
 add_executable(${PROJECT_NAME} src/vector_test_alloc.cc)
 
 # 查找库文件
@@ -24,7 +24,7 @@ add_executable(${PROJECT_NAME} src/vector_test_alloc.cc)
 
 # 链接库文件
 target_link_libraries(${PROJECT_NAME} PUBLIC 
-/home/luyimin/My_STL/thirdparty/gtest/libgtest.a
-/home/luyimin/My_STL/thirdparty/gtest/libgtest_main.a
+/home/luyimin/My_STL/thirdparty/lib/gtest/libgtest.a
+/home/luyimin/My_STL/thirdparty/lib/gtest/libgtest_main.a
 )
 

@@ -2,6 +2,8 @@
 #include "my_stl_vector.h"
 #include "my_stl_alloc.h"
 #include "gtest/gtest.h"
+#include "spdlog/spdlog.h"
+#include "spdlog/sinks/stdout_color_sinks.h"
 
 using namespace std;
 
@@ -64,6 +66,9 @@ TEST_F(Vec_Test, push_back) {
 }
 
 int main(int argc, char** argv) {
+  spdlog::set_level(spdlog::level::debug);
+  spdlog::debug("This message should not be displayed!");
+
   testing::InitGoogleTest(&argc, argv);
   return RUN_ALL_TESTS();
 }
